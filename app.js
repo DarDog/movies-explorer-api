@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errorHandler } = require('./middlewares/errors');
 const { celebrate, Joi } = require('celebrate');
-const { setUser } = require('./controllers/users')
+const { setUser, login } = require('./controllers/users');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -26,7 +26,18 @@ app.post('/signup', celebrate({
         .min(8)
         .max(35),
     }),
-}), setUser)
+}), setUser);
+
+app.post('/signin', celebrate({
+  body: Joi.object()
+    .keys({
+      email: Joi.string()
+        .email()
+        .required(),
+      password: Joi.string()
+        .required(),
+    }),
+}), login)
 
 app.use((req, res, next) => {
   req.user = {
@@ -36,12 +47,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/users', require('./routes/users'))
-app.use('/movies', require('./routes/movies'))
+app.use('/users', require('./routes/users'));
+app.use('/movies', require('./routes/movies'));
 
 app.use(errorHandler);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`App listening on port:${PORT}`);
-})
+});

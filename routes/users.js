@@ -11,6 +11,7 @@ router.patch('/me', celebrate({
       .max(30)
       .required(),
     email: Joi.string()
+      .email()
       .required()
   })
 }), updateUserInfo);
