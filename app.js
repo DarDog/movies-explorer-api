@@ -2,9 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const auth = require('./middlewares/auth')
+const auth = require('./middlewares/auth');
 const { errorHandler } = require('./middlewares/errors');
-const { celebrate, Joi } = require('celebrate');
+const { celebrate, Joi, errors } = require('celebrate');
 const { setUser, login } = require('./controllers/users');
 
 const { PORT = 3000 } = process.env;
@@ -50,6 +50,7 @@ app.use(auth);
 app.use('/users', require('./routes/users'));
 app.use('/movies', require('./routes/movies'));
 
+app.use(errors());
 app.use(errorHandler);
 
 app.listen(PORT, () => {
