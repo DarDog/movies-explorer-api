@@ -9,6 +9,8 @@ mongoose.connect('mongodb://localhost:27017/movies-explorer-db');
 
 app.use(errorHandler);
 
+app.use('/users', require('./routes/users'))
+
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`App listening on port:${PORT}`);
