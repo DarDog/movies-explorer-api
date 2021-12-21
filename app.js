@@ -7,6 +7,7 @@ const auth = require('./middlewares/auth');
 const { errorHandler } = require('./middlewares/errors');
 const { celebrate, Joi, errors } = require('celebrate');
 const { setUser, login } = require('./controllers/users');
+const { requestLogger, errorLogger } = require('./middlewares/Logger');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -28,6 +29,8 @@ mongoose.connect('mongodb://localhost:27017/movies-explorer-db');
 
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+app.use(requestLogger);
 
 app.post('/signup', celebrate({
   body: Joi.object()
@@ -66,6 +69,8 @@ app.get('/signout', (req, res) => {
     .end();
 });
 app.use('/', require('./routes/notFound'));
+
+app.use(errorLogger);
 
 app.use(errors());
 app.use(errorHandler);
