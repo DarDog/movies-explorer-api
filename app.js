@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const auth = require('./middlewares/auth');
 const { errorHandler } = require('./middlewares/errors');
 const { celebrate, Joi, errors } = require('celebrate');
@@ -12,6 +13,16 @@ const app = express();
 
 require('dotenv')
   .config();
+
+app.use(cors({
+  option: [
+    'http://localhost:5555'
+  ],
+  origin: [
+    'http://localhost:5555'
+  ],
+  credential: true
+}));
 
 mongoose.connect('mongodb://localhost:27017/movies-explorer-db');
 
