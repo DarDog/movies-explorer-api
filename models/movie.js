@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { isUrl } = require('validator');
+const { isURL } = require('validator');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -26,7 +26,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: (v) => isUrl(v),
+      validator: (v) => isURL(v),
       message: 'Поле image обязательно должно быть в URL формате'
     },
   },
@@ -34,7 +34,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: (v) => isUrl(v),
+      validator: (v) => isURL(v),
       message: 'Поле trailer обязательно должно быть в URL формате'
     },
   },
@@ -42,7 +42,7 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: (v) => isUrl(v),
+      validator: (v) => isURL(v),
       message: 'Поле thumbnail обязательно должно быть в URL формате'
     },
   },
