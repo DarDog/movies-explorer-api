@@ -19,12 +19,13 @@ module.exports.updateUserInfo = (req, res, next) => {
     },
     {
       new: true,
-      runValidators: true
+      runValidators: true,
     },
   )
     .orFail(new Error('InvalidId'))
     .then(user => res.send(user))
     .catch(err => {
+      console.log(err)
       if (err.message === 'InvalidId') {
         next(new NotFoundError(`Пользователь с ID: ${req.user._id} не найден`));
       } else if (err.name === 'ValidationError') {
