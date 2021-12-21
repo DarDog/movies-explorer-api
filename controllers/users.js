@@ -1,8 +1,10 @@
-const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 const NotFoundError = require('../errors/NotFound');
 const BadRequestError = require('../errors/BadRequest');
 const ConflictError = require('../errors/Conflict');
+const UnauthorizedError = require('../errors/Unauthorized');
 
 module.exports.getUserInfo = (req, res, next) => {
   User.findById(req.user._id)
@@ -61,6 +63,43 @@ module.exports.setUser = (req, res, next) => {
         next(new ConflictError('Пользователь с таким email уже зарегистрирован'));
       } else if (err.name === 'ValidationError') {
         next(new BadRequestError(err.message));
+      } else {
+        next(err);
+      }
+    });
+};
+
+module.exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+
+  User.findOne({ email })
+    .select('+password')
+    .orFail(new Error('InvalidEmail'))
+    .then(user => {
+      bcrypt.compare(password, user.password)
+        .then(matched => {
+          if (!matched) {
+            next(new UnauthorizedError('Неправильный email или password'));
+          } else {
+            const token = jwt.sign(
+              { _id: user._id },
+              NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+              { expiresIn: '7d' },
+            );
+            res
+              .cookies('jwt', token, {
+                maxAge: 3600000 * 24 * 7,
+                httpOnly: true,
+                sameSite: 'None',
+                secure: true,
+              })
+              .end();
+          }
+        });
+    })
+    .catch(err => {
+      if (err.message === 'InvalidEmail') {
+        next(new UnauthorizedError('Неправильный email или password'));
       } else {
         next(err);
       }

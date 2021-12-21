@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const { errorHandler } = require('./middlewares/errors');
 const { celebrate, Joi } = require('celebrate');
 const { setUser, login } = require('./controllers/users');
@@ -8,9 +9,13 @@ const { setUser, login } = require('./controllers/users');
 const { PORT = 3000 } = process.env;
 const app = express();
 
+require('dotenv')
+  .config();
+
 mongoose.connect('mongodb://localhost:27017/movies-explorer-db');
 
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.post('/signup', celebrate({
   body: Joi.object()
@@ -37,7 +42,7 @@ app.post('/signin', celebrate({
       password: Joi.string()
         .required(),
     }),
-}), login)
+}), login);
 
 app.use((req, res, next) => {
   req.user = {
