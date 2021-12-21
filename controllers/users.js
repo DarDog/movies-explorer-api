@@ -6,6 +6,8 @@ const BadRequestError = require('../errors/BadRequest');
 const ConflictError = require('../errors/Conflict');
 const UnauthorizedError = require('../errors/Unauthorized');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 module.exports.getUserInfo = (req, res, next) => {
   User.findById(req.user._id)
     .then(user => res.send(user))
@@ -87,7 +89,7 @@ module.exports.login = (req, res, next) => {
               { expiresIn: '7d' },
             );
             res
-              .cookies('jwt', token, {
+              .cookie('jwt', token, {
                 maxAge: 3600000 * 24 * 7,
                 httpOnly: true,
                 sameSite: 'None',
