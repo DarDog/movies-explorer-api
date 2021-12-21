@@ -60,7 +60,12 @@ app.use(auth);
 
 app.use('/users', require('./routes/users'));
 app.use('/movies', require('./routes/movies'));
-app.use('/', require('./routes/notFound'))
+app.get('/signout', (req, res) => {
+  res.status(200)
+    .clearCookie('jwt', {})
+    .end();
+});
+app.use('/', require('./routes/notFound'));
 
 app.use(errors());
 app.use(errorHandler);
