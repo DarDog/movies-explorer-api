@@ -44,13 +44,7 @@ app.post('/signin', celebrate({
     }),
 }), login);
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '61c1553737cf3918c833a882'
-  };
-
-  next();
-});
+app.use(auth);
 
 app.use('/users', require('./routes/users'));
 app.use('/movies', require('./routes/movies'));
