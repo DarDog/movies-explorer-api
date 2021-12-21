@@ -19,6 +19,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/users', require('./routes/users'))
+app.use('/movies', require('./routes/movies'))
 
 app.use(errorHandler);
 
