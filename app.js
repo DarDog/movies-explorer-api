@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const auth = require('./middlewares/auth')
 const { errorHandler } = require('./middlewares/errors');
 const { celebrate, Joi } = require('celebrate');
 const { setUser, login } = require('./controllers/users');
