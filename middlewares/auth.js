@@ -17,7 +17,7 @@ module.exports = (req, res, next) => {
     next(new UnauthorizedError('Ваш токен устарел или не валиден'));
   }
 
-  req.user = payload
+  req.user = payload;
 
   next();
-}
+};

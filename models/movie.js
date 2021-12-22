@@ -27,7 +27,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => isURL(v),
-      message: 'Поле image обязательно должно быть в URL формате'
+      message: 'Поле image обязательно должно быть в URL формате',
     },
   },
   trailer: {
@@ -35,7 +35,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => isURL(v),
-      message: 'Поле trailer обязательно должно быть в URL формате'
+      message: 'Поле trailer обязательно должно быть в URL формате',
     },
   },
   thumbnail: {
@@ -43,13 +43,13 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => isURL(v),
-      message: 'Поле thumbnail обязательно должно быть в URL формате'
+      message: 'Поле thumbnail обязательно должно быть в URL формате',
     },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     rew: 'user',
-    required: true
+    required: true,
   },
   movieId: {
     type: String,

@@ -3,13 +3,13 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const { celebrate, Joi, errors } = require('celebrate');
 const auth = require('./middlewares/auth');
 const { errorHandler } = require('./middlewares/errors');
-const { celebrate, Joi, errors } = require('celebrate');
 const { setUser, login } = require('./controllers/users');
 const { requestLogger, errorLogger } = require('./middlewares/Logger');
 
-const { PORT = 3000 } = process.env;
+const { NODE_ENV, PORT = 3000, DB } = process.env;
 const app = express();
 
 require('dotenv')
@@ -17,15 +17,17 @@ require('dotenv')
 
 app.use(cors({
   option: [
-    'http://localhost:5555'
+    'http://localhost:5555',
   ],
   origin: [
-    'http://localhost:5555'
+    'http://localhost:5555',
   ],
-  credential: true
+  credential: true,
 }));
 
-mongoose.connect('mongodb://localhost:27017/movies-explorer-db');
+mongoose.connect(`${NODE_ENV === 'production'
+  ? DB
+  : 'mongodb://localhost:27017/moviesdb'}`);
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -63,6 +65,7 @@ app.use(auth);
 
 app.use('/users', require('./routes/users'));
 app.use('/movies', require('./routes/movies'));
+
 app.get('/signout', (req, res) => {
   res.status(200)
     .clearCookie('jwt', {})

@@ -10,7 +10,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.getUserInfo = (req, res, next) => {
   User.findById(req.user._id)
-    .then(user => res.send(user))
+    .then((user) => res.send(user))
     .catch(next);
 };
 
@@ -29,9 +29,8 @@ module.exports.updateUserInfo = (req, res, next) => {
     },
   )
     .orFail(new Error('InvalidId'))
-    .then(user => res.send(user))
-    .catch(err => {
-      console.log(err);
+    .then((user) => res.send(user))
+    .catch((err) => {
       if (err.message === 'InvalidId') {
         next(new NotFoundError(`Пользователь с ID: ${req.user._id} не найден`));
       } else if (err.name === 'ValidationError') {
@@ -47,20 +46,18 @@ module.exports.setUser = (req, res, next) => {
   const { email, name, password } = req.body;
 
   bcrypt.hash(password, 10)
-    .then(hash => User.create({
+    .then((hash) => User.create({
       email,
       name,
       password: hash,
     }))
-    .then(() =>
-      res.send({
-        data: {
-          name,
-          email
-        }
-      })
-    )
-    .catch(err => {
+    .then(() => res.send({
+      data: {
+        name,
+        email,
+      },
+    }))
+    .catch((err) => {
       if (err.code === 11000) {
         next(new ConflictError('Пользователь с таким email уже зарегистрирован'));
       } else if (err.name === 'ValidationError') {
@@ -77,9 +74,9 @@ module.exports.login = (req, res, next) => {
   User.findOne({ email })
     .select('+password')
     .orFail(new Error('InvalidEmail'))
-    .then(user => {
+    .then((user) => {
       bcrypt.compare(password, user.password)
-        .then(matched => {
+        .then((matched) => {
           if (!matched) {
             next(new UnauthorizedError('Неправильный email или password'));
           } else {
@@ -92,15 +89,12 @@ module.exports.login = (req, res, next) => {
               .cookie('jwt', token, {
                 maxAge: 3600000 * 24 * 7,
                 httpOnly: true,
-                //TODO Вернуть настройки куки перед деплоем
-                // sameSite: 'None',
-                // secure: true,
               })
               .end();
           }
         });
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.message === 'InvalidEmail') {
         next(new UnauthorizedError('Неправильный email или password'));
       } else {

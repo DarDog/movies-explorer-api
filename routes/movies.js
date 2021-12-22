@@ -1,9 +1,9 @@
 const router = require('express')
   .Router();
 const { celebrate, Joi } = require('celebrate');
-const regExp = require('../regexp/regexp')
+const regExp = require('../regexp/regexp');
 
-const { getMovies, setMovie, removeMovie } = require('../controllers/movies')
+const { getMovies, setMovie, removeMovie } = require('../controllers/movies');
 
 router.get('/', getMovies);
 router.post('/', celebrate({
@@ -33,14 +33,14 @@ router.post('/', celebrate({
       .required(),
     nameEN: Joi.string()
       .required(),
-  })
-}) ,setMovie);
+  }),
+}), setMovie);
 router.delete('/:movieId', celebrate({
   params: Joi.object()
     .keys({
       movieId: Joi.string()
         .hex(),
-    })
-}),removeMovie);
+    }),
+}), removeMovie);
 
 module.exports = router;

@@ -4,8 +4,8 @@ const ForbiddenError = require('../errors/Forbidden');
 const NotFoundError = require('../errors/NotFound');
 
 module.exports.getMovies = (req, res, next) => {
-  Movies.find({})
-    .then(movies => res.send(movies))
+  Movies.find({ owner: req.user._id })
+    .then((movies) => res.send(movies))
     .catch(next);
 };
 
@@ -37,10 +37,10 @@ module.exports.setMovie = (req, res, next) => {
     movieId,
     nameRU,
     nameEN,
-    owner: _id
+    owner: _id,
   })
-    .then(movie => res.send({ movie }))
-    .catch(err => {
+    .then((movie) => res.send({ movie }))
+    .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError(err.message || 'Переданы некорректные данные при сохранение фильма'));
       } else {
@@ -52,16 +52,15 @@ module.exports.setMovie = (req, res, next) => {
 module.exports.removeMovie = (req, res, next) => {
   Movies.findById(req.params.movieId)
     .orFail(new Error('InvalidId'))
-    .then(movie => {
+    .then((movie) => {
       if (movie.owner.toString() === req.user._id.toString()) {
-        movie.remove(() =>
-          res.status(200)
-            .send({ message: 'Фильм успешно удален' }));
+        movie.remove(() => res.status(200)
+          .send({ message: 'Фильм успешно удален' }));
       } else {
         next(new ForbiddenError('У вас нет прав для удаления этого фильма'));
       }
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.message === 'InvalidId') {
         next(new NotFoundError(`Фильм с ID:${req.params.movieId} не найден`));
       } else if (err.name === 'CastError') {
