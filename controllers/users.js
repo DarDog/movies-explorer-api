@@ -37,6 +37,8 @@ module.exports.updateUserInfo = (req, res, next) => {
         next(new BadRequestError('Переданы некорректные данные при создание пользователя'));
       } else if (err.name === 'CastError') {
         next(new BadRequestError('Введен некорректный ID'));
+      } else if (err.code === 11000) {
+        next(new ConflictError('Пользователь с таким email уже зарегистрирован'));
       }
       next(err);
     });
