@@ -11,8 +11,7 @@ router.post('/signup', celebrate({
         .required(),
       name: Joi.string()
         .min(2)
-        .max(30)
-        .required(),
+        .max(30),
       password: Joi.string()
         .required()
         .min(8)
@@ -30,5 +29,3 @@ router.post('/signin', celebrate({
         .required(),
     }),
 }), login);
-
-module.exports = router;

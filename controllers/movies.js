@@ -51,7 +51,7 @@ module.exports.setMovie = (req, res, next) => {
 
 module.exports.removeMovie = (req, res, next) => {
   Movies.findById(req.params.movieId)
-    .orFail(new Error('InvalidId'))
+    .orFail(new NotFoundError(`Фильм с ID:${req.params.movieId} не найден`))
     .then((movie) => {
       if (movie.owner.toString() === req.user._id.toString()) {
         return movie.remove(() => res.status(200)
@@ -61,9 +61,7 @@ module.exports.removeMovie = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.message === 'InvalidId') {
-        next(new NotFoundError(`Фильм с ID:${req.params.movieId} не найден`));
-      } else if (err.name === 'CastError') {
+      if (err.name === 'CastError') {
         next(new BadRequestError('Переданы некорректные данные'));
       } else {
         next(err);

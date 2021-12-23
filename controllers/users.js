@@ -28,12 +28,10 @@ module.exports.updateUserInfo = (req, res, next) => {
       runValidators: true,
     },
   )
-    .orFail(new Error('InvalidId'))
+    .orFail(new NotFoundError(`Пользователь с ID: ${req.user._id} не найден`))
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err.message === 'InvalidId') {
-        next(new NotFoundError(`Пользователь с ID: ${req.user._id} не найден`));
-      } else if (err.name === 'ValidationError') {
+      if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при создание пользователя'));
       } else if (err.name === 'CastError') {
         next(new BadRequestError('Введен некорректный ID'));
@@ -75,7 +73,7 @@ module.exports.login = (req, res, next) => {
 
   User.findOne({ email })
     .select('+password')
-    .orFail(new Error('InvalidEmail'))
+    .orFail(new UnauthorizedError('Неправильный email или password'))
     .then((user) => {
       bcrypt.compare(password, user.password)
         .then((matched) => {
@@ -97,10 +95,6 @@ module.exports.login = (req, res, next) => {
         });
     })
     .catch((err) => {
-      if (err.message === 'InvalidEmail') {
-        next(new UnauthorizedError('Неправильный email или password'));
-      } else {
-        next(err);
-      }
+      next(err);
     });
 };
