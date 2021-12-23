@@ -54,7 +54,7 @@ module.exports.removeMovie = (req, res, next) => {
     .orFail(new Error('InvalidId'))
     .then((movie) => {
       if (movie.owner.toString() === req.user._id.toString()) {
-        movie.remove(() => res.status(200)
+        return movie.remove(() => res.status(200)
           .send({ message: 'Фильм успешно удален' }));
       } else {
         next(new ForbiddenError('У вас нет прав для удаления этого фильма'));
