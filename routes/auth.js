@@ -29,3 +29,5 @@ router.post('/signin', celebrate({
         .required(),
     }),
 }), login);
+
+module.exports = router;

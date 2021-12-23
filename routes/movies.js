@@ -5,7 +5,7 @@ const { celebrate, Joi } = require('celebrate');
 
 const { getMovies, setMovie, removeMovie } = require('../controllers/movies');
 
-router.get('/movies/', getMovies());
+router.get('/movies/', getMovies);
 
 router.post('/movies/', celebrate({
   body: Joi.object({

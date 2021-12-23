@@ -54,11 +54,11 @@ module.exports.removeMovie = (req, res, next) => {
     .orFail(new NotFoundError(`Фильм с ID:${req.params.movieId} не найден`))
     .then((movie) => {
       if (movie.owner.toString() === req.user._id.toString()) {
-        return movie.remove(() => res.status(200)
-          .send({ message: 'Фильм успешно удален' }));
-      } else {
-        next(new ForbiddenError('У вас нет прав для удаления этого фильма'));
+        return movie.remove()
+          .then(() => res.status(200)
+            .send({ message: 'Фильм успешно удален' }));
       }
+      throw new ForbiddenError('У вас нет прав для удаления этого фильма');
     })
     .catch((err) => {
       if (err.name === 'CastError') {
