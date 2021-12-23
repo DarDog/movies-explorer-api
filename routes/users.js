@@ -3,8 +3,8 @@ const router = require('express')
 const { celebrate, Joi } = require('celebrate');
 const { getUserInfo, updateUserInfo } = require('../controllers/users');
 
-router.get('/me', getUserInfo);
-router.patch('/me', celebrate({
+router.get('/users/me', getUserInfo);
+router.patch('/users/me', celebrate({
   body: Joi.object({
     name: Joi.string()
       .min(2)

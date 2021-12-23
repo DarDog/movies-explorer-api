@@ -5,8 +5,8 @@ const regExp = require('../regexp/regexp');
 
 const { getMovies, setMovie, removeMovie } = require('../controllers/movies');
 
-router.get('/', getMovies);
-router.post('/', celebrate({
+router.get('/movies/', getMovies);
+router.post('/movies/', celebrate({
   body: Joi.object({
     country: Joi.string()
       .required(),
@@ -35,7 +35,7 @@ router.post('/', celebrate({
       .required(),
   }),
 }), setMovie);
-router.delete('/:movieId', celebrate({
+router.delete('/movies/:movieId', celebrate({
   params: Joi.object()
     .keys({
       movieId: Joi.string()

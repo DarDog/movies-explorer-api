@@ -3,10 +3,9 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const { celebrate, Joi, errors } = require('celebrate');
+const { errors } = require('celebrate');
 const auth = require('./middlewares/auth');
 const { errorHandler } = require('./middlewares/errors');
-const { setUser, login } = require('./controllers/users');
 const { requestLogger, errorLogger } = require('./middlewares/Logger');
 
 const { NODE_ENV, PORT = 3000, DB } = process.env;
@@ -42,15 +41,12 @@ app.use(require('./routes/auth'));
 
 app.use(auth);
 
-app.use('/users', require('./routes/users'));
-app.use('/movies', require('./routes/movies'));
+app.use(require('./routes/users'));
+app.use(require('./routes/movies'));
 
-app.get('/signout', (req, res) => {
-  res.status(200)
-    .clearCookie('jwt', {})
-    .end();
-});
-app.use('/', require('./routes/notFound'));
+app.use(require('./routes/signout'));
+
+app.use(require('./routes/notFound'));
 
 app.use(errorLogger);
 
