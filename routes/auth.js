@@ -11,7 +11,8 @@ router.post('/signup', celebrate({
         .required(),
       name: Joi.string()
         .min(2)
-        .max(30),
+        .max(30)
+        .required(),
       password: Joi.string()
         .required()
         .min(8)
