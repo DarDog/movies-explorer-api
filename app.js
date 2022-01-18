@@ -16,12 +16,12 @@ require('dotenv')
 
 app.use(cors({
   option: [
-    'http://localhost:5555',
+    'http://localhost:3000',
     'http://movie.explorer.subb.front.nomoredomains.rocks',
     'https://movie.explorer.subb.front.nomoredomains.rocks',
   ],
   origin: [
-    'http://localhost:5555',
+    'http://localhost:3000',
     'http://movie.explorer.subb.front.nomoredomains.rocks',
     'https://movie.explorer.subb.front.nomoredomains.rocks',
   ],
