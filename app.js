@@ -25,7 +25,7 @@ app.use(cors({
     'http://movie.explorer.subb.front.nomoredomains.rocks',
     'https://movie.explorer.subb.front.nomoredomains.rocks',
   ],
-  credential: true,
+  credentials: true,
 }));
 
 mongoose.connect(`${NODE_ENV === 'production'
