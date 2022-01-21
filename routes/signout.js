@@ -3,7 +3,10 @@ const router = require('express')
 
 router.get('/signout', (req, res) => {
   res.status(200)
-    .clearCookie('jwt', {})
+    .clearCookie('jwt', {
+      sameSite: 'None',
+      secure: true,
+    })
     .end();
 });
 
