@@ -1,6 +1,6 @@
 const router = require('express')
   .Router();
-const { isUrl } = require('validator');
+const { isURL } = require('validator');
 const { celebrate, Joi } = require('celebrate');
 
 const { getMovies, setMovie, removeMovie } = require('../controllers/movies');
@@ -21,19 +21,19 @@ router.post('/movies/', celebrate({
       .required(),
     image: Joi.string()
       .custom((value, helpers) => {
-        if (isUrl(value)) return value;
+        if (isURL(value)) return value;
         return helpers.message('Поле image должно быть в формате URL');
       })
       .required(),
     trailer: Joi.string()
       .custom((value, helpers) => {
-        if (isUrl(value)) return value;
+        if (isURL(value)) return value;
         return helpers.message('Поле trailer должно быть в формате URL');
       })
       .required(),
     thumbnail: Joi.string()
       .custom((value, helpers) => {
-        if (isUrl(value)) return value;
+        if (isURL(value)) return value;
         return helpers.message('Поле thumbnail должно быть в формате URL');
       })
       .required(),
