@@ -50,7 +50,7 @@ module.exports.setMovie = (req, res, next) => {
 };
 
 module.exports.removeMovie = (req, res, next) => {
-  Movies.findById(req.params.movieId)
+  Movies.findOne({movieId: req.params.movieId})
     .orFail(new NotFoundError(`Фильм с ID:${req.params.movieId} не найден`))
     .then((movie) => {
       if (movie.owner.toString() === req.user._id.toString()) {
