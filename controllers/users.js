@@ -61,7 +61,7 @@ module.exports.setUser = (req, res, next) => {
       if (err.code === 11000) {
         next(new ConflictError('Пользователь с таким email уже зарегистрирован'));
       } else if (err.name === 'ValidationError') {
-        next(new BadRequestError(err.message));
+        next(new BadRequestError('Введены некорректные данные'));
       } else {
         next(err);
       }
