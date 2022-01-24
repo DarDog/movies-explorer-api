@@ -92,7 +92,7 @@ module.exports.login = (req, res, next) => {
                 sameSite: 'None',
                 secure: true,
               })
-              .end();
+              .send({message: 'Вы успешно авторизовались'})
           }
         });
     })
