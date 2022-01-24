@@ -4,13 +4,13 @@ const { isEmail } = require('validator');
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    minLength: 2,
-    maxLength: 30,
-    required: true,
+    minLength: [2, 'Минимальная длина поля "name" должна быть 2 символа'],
+    maxLength: [30, 'Максимальная длина поля "name" должна быть 30 символов'],
+    required: [true, 'Поле "name" должно быть заполнено'],
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'Поле "email" должно быть заполнено'],
     unique: true,
     validate: {
       validator: (v) => isEmail(v),
@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    required: [true, 'Поле "password" должно быть заполнено'],
     select: false,
   },
 });
