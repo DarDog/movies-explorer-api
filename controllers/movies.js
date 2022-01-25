@@ -58,13 +58,7 @@ module.exports.removeMovie = (req, res, next) => {
           .then(() => res.status(200)
             .send({ message: 'Фильм успешно удален' }));
       }
-      throw new ForbiddenError(`
-        message: Не возможно удалить фильм,
-        isOwner: ${movie.owner.toString() === req.user._id.toString()},
-        movieOwner: ${movie.owner.toString()},
-        userId: ${req.user._id.toString()},
-        thisMovie: ${movie}
-      `);
+      throw new ForbiddenError('У вас нет прав на удаление этого фильма');
     })
     .catch((err) => {
       if (err.name === 'CastError') {
