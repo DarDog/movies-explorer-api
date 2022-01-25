@@ -9,8 +9,6 @@ router.get('/movies/', getMovies);
 
 router.post('/movies/', celebrate({
   body: Joi.object({
-    country: Joi.string()
-      .required(),
     director: Joi.string()
       .required(),
     duration: Joi.number()
@@ -25,12 +23,6 @@ router.post('/movies/', celebrate({
         return helpers.message('Поле image должно быть в формате URL');
       })
       .required(),
-    trailer: Joi.string()
-      .custom((value, helpers) => {
-        if (isURL(value)) return value;
-        return helpers.message('Поле trailer должно быть в формате URL');
-      })
-      .required(),
     thumbnail: Joi.string()
       .custom((value, helpers) => {
         if (isURL(value)) return value;
@@ -40,8 +32,6 @@ router.post('/movies/', celebrate({
     movieId: Joi.number()
       .required(),
     nameRU: Joi.string()
-      .required(),
-    nameEN: Joi.string()
       .required(),
   }),
 }), setMovie);
