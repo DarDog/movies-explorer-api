@@ -3,8 +3,8 @@ const { isURL } = require('validator');
 
 const movieSchema = new mongoose.Schema({
   country: {
-    type: String,
-    required: true,
+    // type: String,
+    // required: true,
   },
   director: {
     type: String,
@@ -31,12 +31,12 @@ const movieSchema = new mongoose.Schema({
     },
   },
   trailer: {
-    type: String,
-    required: true,
-    validate: {
-      validator: (v) => isURL(v),
-      message: 'Поле trailer обязательно должно быть в URL формате',
-    },
+    // type: String,
+    // required: true,
+    // validate: {
+    //   validator: (v) => isURL(v),
+    //   message: 'Поле trailer обязательно должно быть в URL формате',
+    // },
   },
   thumbnail: {
     type: String,
@@ -60,8 +60,8 @@ const movieSchema = new mongoose.Schema({
     required: true,
   },
   nameEN: {
-    type: String,
-    required: true,
+    // type: String,
+    // required: true,
   },
 });
 
