@@ -58,7 +58,7 @@ module.exports.removeMovie = (req, res, next) => {
           .then(() => res.status(200)
             .send({ message: 'Фильм успешно удален' }));
       }
-      throw new ForbiddenError('У вас нет прав для удаления этого фильма');
+      // throw new ForbiddenError('У вас нет прав для удаления этого фильма');
     })
     .catch((err) => {
       if (err.name === 'CastError') {
